@@ -194,7 +194,7 @@ class Dataset():
 			self.mousew = object_w*object_r # soll das wirklich so sein?
 		
 		if type == "DFG_benchmark" or type == "poiseuille" or type == "paint": # DFG benchmark problem as specified in http://www.featflow.de/en/benchmarks/cfdbenchmarking/flow/dfg_benchmark2_re100.html
-			flow_v = self.max_speed*(np.random.rand()-0.5)*2 #flow velocity TODO: set to 0.3 / 1.5
+			flow_v = self.max_speed*(np.random.rand()-0.5)*2 #flow velocity
 			object_r = 0.05/0.41*(self.h-2*self.padding_y) # object radius
 			
 			object_y = 0.2/0.41*(self.h-2*self.padding_y)+self.padding_y
@@ -538,12 +538,10 @@ class Dataset():
 				if self.mouse_paint:
 					x_pos1, y_pos1 = int(self.resolution_factor*(self.mousex-self.mouse_radius)),int(self.resolution_factor*(self.mousey-self.mouse_radius))
 					x_pos2, y_pos2 = x_pos1+2*self.resolution_factor*self.mouse_radius,y_pos1+2*self.resolution_factor*self.mouse_radius
-					# TODO: clip values to avoid overflows
 					self.v_mask_full_res[index,:,x_pos1:x_pos2,y_pos1:y_pos2] = 1
 				if self.mouse_erase:
 					x_pos1, y_pos1 = int(self.resolution_factor*(self.mousex-self.mouse_radius)),int(self.resolution_factor*(self.mousey-self.mouse_radius))
 					x_pos2, y_pos2 = x_pos1+2*self.resolution_factor*self.mouse_radius,y_pos1+2*self.resolution_factor*self.mouse_radius
-					# TODO: clip values to avoid overflows
 					self.v_mask_full_res[index,:,x_pos1:x_pos2,y_pos1:y_pos2] = 0
 			
 			self.v_mask_full_res[index,:,:(self.padding_x*self.resolution_factor),:] = 1

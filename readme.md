@@ -41,7 +41,7 @@ Now, install the following packages:
 
 ```
 conda install pytorch torchvision cudatoolkit=10.2 -c pytorch  
-conda install matplotlib statsmodels natsort tensorboard  
+conda install matplotlib statsmodels natsort tensorboard pyevtk  
 pip install opencv-python
 ```
 

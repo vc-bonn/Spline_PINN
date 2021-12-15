@@ -1,3 +1,4 @@
+from fluid_setups import Dataset
 from wave_setups import Dataset
 from spline_models import superres_2d_wave,get_Net,interpolate_wave_states_2
 from operators import vector2HSV
