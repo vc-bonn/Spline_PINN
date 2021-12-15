@@ -49,7 +49,7 @@ pip install opencv-python
 The installation was tested on Ubuntu 18.04, but other operating systems should work as well. 
 If you have troubles with cuda (e.g. because you don't have a GPU at hand), use the "\-\-cuda=f" option for all of the following python scripts.
 
-## Interactive Demo and Visualization TODO
+## Interactive Demo and Visualization
 
 We provide you with several pretrained models so you can directly start to play around with our interactive demos.
 
