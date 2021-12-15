@@ -82,6 +82,9 @@ If you want to create your own custom obstacles, please have a look into fluid_t
 
 In case you want to try out further viscosities and densities, we provide you with the following additional pretrained models:
 
+- (mu=1,rho=1)
+- (mu=0.1, rho=1)
+- (mu=0.01, rho=10)
 
 If you want to train your own models with arbitrary viscosities and densities, please have a look below at the training section.
 
