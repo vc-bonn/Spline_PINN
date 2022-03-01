@@ -34,7 +34,7 @@ First, create a new Conda-environment:
 
 ```
 conda create --name my_cool_fluid_env python=3.7  
-source activate my_cool_fluid_env
+conda activate my_cool_fluid_env
 ```
 
 Now, install the following packages:
@@ -44,6 +44,8 @@ conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
 conda install matplotlib statsmodels natsort tensorboard pyevtk  
 pip install opencv-python
 ```
+
+Finally, ensure you have [git-lfs](https://git-lfs.github.com/) installed and enabled for your user account.
 
 ... and you're done :)  
 The installation was tested on Ubuntu 18.04, but other operating systems should work as well. 
