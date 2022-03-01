@@ -80,78 +80,76 @@ while not exit_loop:
 		dataset.tell(toCpu(new_hidden_state))
 		
 		# visualize fields
-		if i%1==0:
+		print(f"env_info: {dataset.env_info[0]}")
+		
+		# obtain interpolated field values for z,grad_z,laplace_z,v,a from spline coefficients
+		z,grad_z,laplace_z,v,a = superres_2d_wave(new_hidden_state[0:1],orders_z,resolution_factor)
+		
+		# visualize field values
+		image = z[0,0].cpu().detach().clone()
+		image = torch.clamp(0.5*image+0.5,min=0,max=1)
+		image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
+		if save_movie:
+			movie_z.write((255*image).astype(np.uint8))
+		cv2.imshow('z',image)
+		
+		image = v[0,0].cpu().detach().clone()
+		image = torch.clamp(0.2*image+0.5,min=0,max=1)
+		image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
+		if save_movie:
+			movie_v.write((255*image).astype(np.uint8))
+		cv2.imshow('v',image)
+		
+		image = a[0,0].cpu().detach().clone()
+		image = torch.clamp(0.03*image+0.5,min=0,max=1)
+		image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
+		if save_movie:
+			movie_a.write((255*image).astype(np.uint8))
+		cv2.imshow('a',image)
+		
+		key = cv2.waitKey(1)
+		
+		if key==ord('x'): # increase frequency (works only for 'box' environment)
+			dataset.mousev*=1.1
+		elif key==ord('y'): # decrease frequency (works only for 'box' environment)
+			dataset.mousev/=1.1
+		
+		if key==ord('n'): # start with new environment
+			break
+		
+		if key==ord('q'): # quit simulation
+			exit_loop = True
+			break
+		
+		if key==ord('p'): # print fields using matplotlib
+			fig = plt.figure(1,(12,6))
+			ax = fig.add_subplot(1,2,1)
+			cond_mask = dataset.z_mask_full_res[0,0]
+			pm = np.ma.masked_where(toCpu(cond_mask).numpy()==1, z[0,0].cpu().detach().clone())
+			palette = plt.cm.viridis#plasma#gnuplot2#magma#inferno#
+			palette.set_bad('k',1.0)
+			plt.imshow(pm,cmap=palette)
+			plt.axis('off')
+			plt.title("z")
+			divider = make_axes_locatable(ax)
+			cax = divider.append_axes("right",size="5%",pad=0.05)
+			plt.colorbar(cax=cax)
 			
-			print(f"env_info: {dataset.env_info[0]}")
+			ax = fig.add_subplot(1,2,2)
+			cond_mask = dataset.z_mask_full_res[0,0]
+			pm = np.ma.masked_where(toCpu(cond_mask).numpy()==1, v[0,0].cpu().detach().clone())
+			plt.imshow(pm,cmap=palette)
+			plt.axis('off')
+			plt.title("v")
+			divider = make_axes_locatable(ax)
+			cax = divider.append_axes("right",size="5%",pad=0.05)
+			plt.colorbar(cax=cax)
 			
-			# obtain interpolated field values for z,grad_z,laplace_z,v,a from spline coefficients
-			z,grad_z,laplace_z,v,a = superres_2d_wave(new_hidden_state[0:1],orders_z,resolution_factor)
-			
-			# visualize field values
-			image = z[0,0].cpu().detach().clone()
-			image = torch.clamp(0.5*image+0.5,min=0,max=1)
-			image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
-			if save_movie:
-				movie_z.write((255*image).astype(np.uint8))
-			cv2.imshow('z',image)
-			
-			image = v[0,0].cpu().detach().clone()
-			image = torch.clamp(0.2*image+0.5,min=0,max=1)
-			image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
-			if save_movie:
-				movie_v.write((255*image).astype(np.uint8))
-			cv2.imshow('v',image)
-			
-			image = a[0,0].cpu().detach().clone()
-			image = torch.clamp(0.03*image+0.5,min=0,max=1)
-			image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
-			if save_movie:
-				movie_a.write((255*image).astype(np.uint8))
-			cv2.imshow('a',image)
-			
-			key = cv2.waitKey(1)
-			
-			if key==ord('x'): # increase frequency (works only for 'box' environment)
-				dataset.mousev*=1.1
-			elif key==ord('y'): # decrease frequency (works only for 'box' environment)
-				dataset.mousev/=1.1
-			
-			if key==ord('n'): # start with new environment
-				break
-			
-			if key==ord('q'): # quit simulation
-				exit_loop = True
-				break
-			
-			if key==ord('p'): # print fields using matplotlib
-				fig = plt.figure(1,(12,6))
-				ax = fig.add_subplot(1,2,1)
-				cond_mask = dataset.z_mask_full_res[0,0]
-				pm = np.ma.masked_where(toCpu(cond_mask).numpy()==1, z[0,0].cpu().detach().clone())
-				palette = plt.cm.viridis#plasma#gnuplot2#magma#inferno#
-				palette.set_bad('k',1.0)
-				plt.imshow(pm,cmap=palette)
-				plt.axis('off')
-				plt.title("z")
-				divider = make_axes_locatable(ax)
-				cax = divider.append_axes("right",size="5%",pad=0.05)
-				plt.colorbar(cax=cax)
-				
-				ax = fig.add_subplot(1,2,2)
-				cond_mask = dataset.z_mask_full_res[0,0]
-				pm = np.ma.masked_where(toCpu(cond_mask).numpy()==1, v[0,0].cpu().detach().clone())
-				plt.imshow(pm,cmap=palette)
-				plt.axis('off')
-				plt.title("v")
-				divider = make_axes_locatable(ax)
-				cax = divider.append_axes("right",size="5%",pad=0.05)
-				plt.colorbar(cax=cax)
-				
-				name = dataset.env_info[0]["type"]
-				if name=="image":
-					name = name+"_"+dataset.env_info[0]["image"]
-				plt.savefig(f"plots/wave_z_v_{name}_{get_hyperparam_wave(params)}.png", bbox_inches='tight')
-				plt.show()
+			name = dataset.env_info[0]["type"]
+			if name=="image":
+				name = name+"_"+dataset.env_info[0]["image"]
+			plt.savefig(f"plots/wave_z_v_{name}_{get_hyperparam_wave(params)}.png", bbox_inches='tight')
+			plt.show()
 			
 			print(f"FPS: {last_FPS}")
 			FPS += 1
