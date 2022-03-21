@@ -9,7 +9,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import time,os
-from numpy2vtk import imageToVTK
+#from numpy2vtk import imageToVTK
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
@@ -62,6 +62,8 @@ FPS = 0
 last_FPS = 0
 last_time = time.time()
 
+v_old = None
+
 # simulation loop
 exit_loop = False
 while not exit_loop:
@@ -86,7 +88,9 @@ while not exit_loop:
 			print(f"env_info: {dataset.env_info[0]}")
 			
 			# obtain interpolated field values for z,grad_z,laplace_z,v,a from spline coefficients
-			z,grad_z,laplace_z,v,a = superres_2d_wave(new_hidden_state[0:1],orders_z,resolution_factor)
+			z,grad_z,laplace_z,v = superres_2d_wave(new_hidden_state[0:1],orders_z,resolution_factor)
+			if v_old is None:
+				v_old = v
 			
 			# visualize field values
 			image = z[0,0].cpu().detach().clone()
@@ -103,8 +107,9 @@ while not exit_loop:
 				movie_v.write((255*image).astype(np.uint8))
 			cv2.imshow('v',image)
 			
+			a = (v-v_old)/(params.dt*n_iterations_per_visualization)
 			image = a[0,0].cpu().detach().clone()
-			image = torch.clamp(0.03*image+0.5,min=0,max=1)
+			image = torch.clamp(0.2*image+0.5,min=0,max=1)
 			image = toCpu(image).unsqueeze(2).repeat(1,1,3).numpy()
 			if save_movie:
 				movie_a.write((255*image).astype(np.uint8))
@@ -153,6 +158,8 @@ while not exit_loop:
 					name = name+"_"+dataset.env_info[0]["image"]
 				plt.savefig(f"plots/wave_z_v_{name}_{get_hyperparam_wave(params)}.png", bbox_inches='tight')
 				plt.show()
+			
+			v_old=v
 			
 			print(f"FPS: {last_FPS}")
 			FPS += 1

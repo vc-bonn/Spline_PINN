@@ -618,13 +618,13 @@ def interpolate_2d_wave(weights,offsets,orders=[1,1]):
 #  superresolution with strided convolution
 def superres_2d_wave(weights,orders=[1,1],resolution_factor=1):
 	"""
-	:return: z,grad_z,laplace_z,v,a
+	:return: z,grad_z,laplace_z,v
 	"""
 	res_key = f"{resolution_factor}, orders: {orders}"
 	if res_key in kernel_buffer_wave_superres.keys():
 		superres_kernels = kernel_buffer_wave_superres[res_key]
 	else:
-		superres_kernels = toCuda(torch.zeros(1,1+2+1+1+1,2*(orders[0]+1)*(orders[1]+1),2*resolution_factor,2*resolution_factor))
+		superres_kernels = toCuda(torch.zeros(1,1+2+1+1,2*(orders[0]+1)*(orders[1]+1),2*resolution_factor,2*resolution_factor))
 		for i in range(resolution_factor):
 			for j in range(resolution_factor):
 				offsets = (toCuda(torch.tensor([i/resolution_factor,j/resolution_factor])).unsqueeze(0).unsqueeze(2).unsqueeze(3).repeat(1,1,2,2)-1+offset_summary)
@@ -645,8 +645,6 @@ def superres_2d_wave(weights,orders=[1,1],resolution_factor=1):
 				for l in range(orders[0]+1):
 					for m in range(orders[1]+1):
 						kernels[0:1,4:5,1,l,m,:,:] = p_multidim(offsets[:,:,l,m],[orders[0],orders[1]],[l,m])
-						kernels[0:1,5:6,0,l,m,:,:] = -6*p_multidim(offsets[:,:,l,m],[orders[0],orders[1]],[l,m])
-						kernels[0:1,5:6,1,l,m,:,:] = -4*p_multidim(offsets[:,:,l,m],[orders[0],orders[1]],[l,m])
 				
 				kernels = kernels.reshape(1,1+2+1+1+1,2*(orders[0]+1)*(orders[1]+1),2,2).detach()
 			
@@ -660,6 +658,6 @@ def superres_2d_wave(weights,orders=[1,1],resolution_factor=1):
 	
 	output = F.conv_transpose2d(weights,superres_kernels[0],padding=0,stride=resolution_factor)
 	
-	return output[:,0:1],output[:,1:3],output[:,3:4],output[:,4:5],output[:,5:6]
+	return output[:,0:1],output[:,1:3],output[:,3:4],output[:,4:5]
 
 

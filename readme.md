@@ -45,7 +45,7 @@ conda install matplotlib statsmodels natsort tensorboard pyevtk
 pip install opencv-python
 ```
 
-Finally, download this github repository and ensure you have [git-lfs](https://git-lfs.github.com/) installed and enabled for your user account.
+Finally, ensure you have [git-lfs](https://git-lfs.github.com/) installed and enabled for your user account and download this github repository.
 
 ... and you're done :)  
 The installation was tested on Ubuntu 18.04, but other operating systems should work as well. 
@@ -66,7 +66,7 @@ python fluid_test.py --net=Fluid_model --hidden_size=50 --mu=0.1 --rho=10
 By pressing the following keys, you can:
 
 - "n": start a new (random) simulation  
-- "p": create a Visualization of the current fluid state with matplotlib  
+- "p": create a visualization of the current fluid state with matplotlib  
 - "q": quit the simulation  
 
 There are several options to interact with the simulation:
