@@ -16,7 +16,7 @@ Furthermore, we provide code so you can train your own PDE models for the incomp
 
 Comprehensive background information is provided in our paper:  
 [Spline-PINN: Approaching PDEs without Data using Fast, Physics-Informed Hermite-Spline CNNs](https://arxiv.org/abs/2109.07143)  
-*Nils Wandel, Michael Weinmann, Michael Neidlin, Reinhard Klein*, AAAI, 2022
+*Nils Wandel, Michael Weinmann, Michael Neidlin, Reinhard Klein*, AAAI, 2022 ([Supplemental video](https://www.youtube.com/watch?v=QC98LCtCZn0), [1 min introduction video](https://www.youtube.com/watch?v=C5IAfCfcyDQ), [20 min presentation](https://www.youtube.com/watch?v=H0g6Tm1zio8))
 
 This physics-*informed* method builds up on previous work that relies on a physics-*constrained* loss based on a finite difference marker and cell grid. Respective publications for 2D and 3D fluid simulations can be found here:
 
@@ -34,7 +34,7 @@ First, create a new Conda-environment:
 
 ```
 conda create --name my_cool_fluid_env python=3.7  
-source activate my_cool_fluid_env
+conda activate my_cool_fluid_env
 ```
 
 Now, install the following packages:
@@ -44,6 +44,8 @@ conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
 conda install matplotlib statsmodels natsort tensorboard pyevtk  
 pip install opencv-python
 ```
+
+Finally, download this github repository and ensure you have [git-lfs](https://git-lfs.github.com/) installed and enabled for your user account.
 
 ... and you're done :)  
 The installation was tested on Ubuntu 18.04, but other operating systems should work as well. 

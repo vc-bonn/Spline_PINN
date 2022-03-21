@@ -17,6 +17,7 @@ torch.manual_seed(0)
 torch.set_num_threads(4)
 np.random.seed(0)
 
+n_iterations_per_visualization = 1 # this value can be set to a higher integer if the cv2 visualizations impose a bottleneck on your computer and you want to speed up the simulation
 save_movie=False#True#
 movie_FPS = 20 # ... choose FPS as provided in visualization
 params.width = 200 if params.width is None else params.width
@@ -80,7 +81,7 @@ while not exit_loop:
 		dataset.tell(toCpu(new_hidden_state))
 		
 		# visualize fields
-		if i%1==0:
+		if i%n_iterations_per_visualization==0:
 			
 			print(f"env_info: {dataset.env_info[0]}")
 			
