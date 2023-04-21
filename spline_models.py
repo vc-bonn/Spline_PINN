@@ -630,7 +630,7 @@ def superres_2d_wave(weights,orders=[1,1],resolution_factor=1):
 				offsets = (toCuda(torch.tensor([i/resolution_factor,j/resolution_factor])).unsqueeze(0).unsqueeze(2).unsqueeze(3).repeat(1,1,2,2)-1+offset_summary)
 				offsets = offsets.unsqueeze(2).unsqueeze(3).repeat(1,1,(orders[0]+1),(orders[1]+1),1,1).detach().requires_grad_(True)
 				
-				kernels = toCuda(torch.zeros(1,1+2+1+1+1,2,(orders[0]+1),(orders[1]+1),2,2))
+				kernels = toCuda(torch.zeros(1,1+2+1+1,2,(orders[0]+1),(orders[1]+1),2,2))
 				for l in range(orders[0]+1):
 					for m in range(orders[1]+1):
 						kernels[0:1,0:1,0,l,m,:,:] = p_multidim(offsets[:,:,l,m],[orders[0],orders[1]],[l,m])
@@ -646,9 +646,9 @@ def superres_2d_wave(weights,orders=[1,1],resolution_factor=1):
 					for m in range(orders[1]+1):
 						kernels[0:1,4:5,1,l,m,:,:] = p_multidim(offsets[:,:,l,m],[orders[0],orders[1]],[l,m])
 				
-				kernels = kernels.reshape(1,1+2+1+1+1,2*(orders[0]+1)*(orders[1]+1),2,2).detach()
+				#kernels = kernels.reshape(1,1+2+1+1+1,2*(orders[0]+1)*(orders[1]+1),2,2).detach()
 			
-				kernels = kernels.reshape(1,1+2+1+1+1,2*(orders[0]+1)*(orders[1]+1),2,2).detach().clone()
+				kernels = kernels.reshape(1,1+2+1+1,2*(orders[0]+1)*(orders[1]+1),2,2).detach().clone()
 				superres_kernels[:,:,:,i::resolution_factor,j::resolution_factor] = kernels
 		
 		# buffer kernels
