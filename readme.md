@@ -45,7 +45,7 @@ conda install matplotlib statsmodels natsort tensorboard pyevtk
 pip install opencv-python
 ```
 
-Finally, ensure you have [git-lfs](https://git-lfs.github.com/) installed and enabled for your user account and download this github repository.
+Finally, clone this github repository. If you want to use pretrained models, download the following zip-file and extract its content into a folder named "/Logger": [https://cg.cs.uni-bonn.de/backend/v1/files/code/Spline_PINN/Logger.zip](https://cg.cs.uni-bonn.de/backend/v1/files/code/Spline_PINN/Logger.zip)
 
 ... and you're done :)  
 The installation was tested on Ubuntu 18.04, but other operating systems should work as well. 
