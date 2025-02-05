@@ -18,6 +18,10 @@ Comprehensive background information is provided in our paper:
 [Spline-PINN: Approaching PDEs without Data using Fast, Physics-Informed Hermite-Spline CNNs](https://arxiv.org/abs/2109.07143)  
 *Nils Wandel, Michael Weinmann, Michael Neidlin, Reinhard Klein*, AAAI, 2022 ([Supplemental video](https://www.youtube.com/watch?v=QC98LCtCZn0), [1 min introduction video](https://www.youtube.com/watch?v=C5IAfCfcyDQ), [20 min presentation](https://www.youtube.com/watch?v=H0g6Tm1zio8))
 
+We also recommend looking into our latest work:  
+[Metamizer: a Versatile Neural Optimizer for Fast and Accurate Physics Simulations](https://wandeln.github.io/Metamizer_webpage/)  
+*Nils Wandel, Stefan Schulz, Reinhard Klein*, ICLR, 2025 ([Code](https://github.com/wandeln/Metamizer))
+
 This physics-*informed* method builds up on previous work that relies on a physics-*constrained* loss based on a finite difference marker and cell grid. Respective publications for 2D and 3D fluid simulations can be found here:
 
 2D: 
